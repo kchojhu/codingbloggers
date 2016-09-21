@@ -3,14 +3,6 @@ import { NgModule, ApplicationRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
-import {AngularFireModule} from "angularfire2";
-
-export const firebaseConfig = {
-  apiKey: "AIzaSyCxChziANeQ6qBrfdTHtSbSZE_nyIAkfv8",
-  authDomain: "codingbloggers.firebaseapp.com",
-  databaseURL: "https://codingbloggers.firebaseio.com",
-  storageBucket: "",
-};
 
 @NgModule({
   declarations: [
@@ -19,8 +11,7 @@ export const firebaseConfig = {
   imports: [
     BrowserModule,
     CommonModule,
-    FormsModule,
-    AngularFireModule.initializeApp(firebaseConfig)
+    FormsModule
   ],
   providers: [],
   entryComponents: [AppComponent],
