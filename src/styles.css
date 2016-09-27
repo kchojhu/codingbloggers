@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+.mainHeader {
+  padding: 0;
+}
+
+.navbar {
+  border-radius: 0;
+}
+
+.loginPopOver {
+  position: absolute;
+  display: block;
+  color: black;
+  left: -200px;
+  margin-top: 0.2em;
+}
+
+.showTransition {
+  display:block;
+}
+
+.loginForm {
+  position: relative;
+}
+
+.btn-outline-success:focus, .btn-outline-success.focus {
+  color: #5cb85c;
+  background-image: none;
+  background-color: transparent;
+  border-color: #5cb85c;
+  outline: none;
+}

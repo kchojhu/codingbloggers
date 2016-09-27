@@ -1,3 +1,17 @@
-<h1>
-  {{title}}
-</h1>
+<header class="container-fluid mainHeader">
+  <nav class="navbar navbar-dark bg-inverse">
+    <a class="navbar-brand" href="#">codingblogger</a>
+    <form class="form-inline pull-xs-right loginForm">
+      <button class="btn btn-outline-success" [ngClass]="{'active':test === 'active'}" (click)="showLoginForm()">Login</button>
+      <div class="card loginPopOver" [@heroState]="test">
+        <div class="card-block">
+          <h4 class="card-title">Card title</h4>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </form>
+  </nav>
+</header>
+
+<h1 id="test">Test</h1>
