@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  background-color: #FFF6E5;
+}
 .mainHeader {
   padding: 0;
 }
@@ -13,6 +16,7 @@
   color: black;
   left: -200px;
   margin-top: 0.2em;
+  overflow: hidden;
 }
 
 .showTransition {
