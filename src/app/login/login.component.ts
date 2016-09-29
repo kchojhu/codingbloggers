@@ -8,6 +8,9 @@ import {
   animate,
   OnInit, ElementRef
 } from '@angular/core';
+import {UserService} from "../service/user.service";
+import {User} from "../model/user";
+import {AppEvent} from "../model/app-event";
 
 @Component({
   selector: 'app-login',
@@ -16,7 +19,7 @@ import {
     '(document:click)': 'checkClickLocation($event)',
   },
   animations: [
-    trigger('heroState', [
+    trigger('loginMenu', [
       state('inactive', style({
         height: 0,
         opacity: 0
@@ -32,22 +35,42 @@ import {
 })
 export class LoginComponent implements OnInit {
 
-  test = 'inactive';
+  loginMenuState = 'inactive';
+  user:User;
+  initLogin = false;
 
   showLoginForm() {
-    this.test = this.test === 'inactive' ? 'active' : 'inactive';
+    this.loginMenuState = this.loginMenuState === 'inactive' ? 'active' : 'inactive';
   }
 
-  constructor(private elementRef:ElementRef) {
+  constructor(private elementRef:ElementRef, private userService:UserService) {
   }
 
   checkClickLocation(event) {
-    if (this.test === 'active' && !this.elementRef.nativeElement.contains(event.target)) {
-      this.test = 'inactive';
+    if (this.loginMenuState === 'active' && !this.elementRef.nativeElement.contains(event.target)) {
+      this.loginMenuState = 'inactive';
     }
   }
 
+  login(type:string) {
+    this.userService.login(type);
+  }
+
+  logout() {
+    this.userService.logout();
+  }
+
   ngOnInit() {
+    this.userService.userEvent.subscribe((appEvent:AppEvent) => {
+      switch(appEvent.type) {
+        case 'notLoggedIn':
+        case 'loggedOut':
+        case 'loggedIn':
+          this.user = this.userService.user;
+          this.initLogin = true;
+          break;
+      }
+    });
   }
 
 }

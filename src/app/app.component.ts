@@ -19,7 +19,5 @@ export class AppComponent {
     this.test = this.test === 'inactive' ? 'active' : 'inactive';
   }
 
-  login() {
-    console.log('hello');
-  }
+
 }
