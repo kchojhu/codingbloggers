@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
   loginMenuState = 'inactive';
   user:User;
   initLogin = false;
+  isNewUser = false;
 
   showLoginForm() {
     this.loginMenuState = this.loginMenuState === 'inactive' ? 'active' : 'inactive';
@@ -60,6 +61,10 @@ export class LoginComponent implements OnInit {
     this.userService.logout();
   }
 
+  // verifyNewUser() {
+  //   if (this.user.)
+  // }
+
   ngOnInit() {
     this.userService.userEvent.subscribe((appEvent:AppEvent) => {
       switch(appEvent.type) {
@@ -68,6 +73,7 @@ export class LoginComponent implements OnInit {
         case 'loggedIn':
           this.user = this.userService.user;
           this.initLogin = true;
+          // verifyNewUser();
           break;
       }
     });

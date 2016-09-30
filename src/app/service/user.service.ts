@@ -1,7 +1,8 @@
 import {Injectable, EventEmitter} from '@angular/core';
-import {AngularFire, AuthProviders, AuthMethods} from "angularfire2";
+import {AngularFire, AuthProviders, AuthMethods, FirebaseObjectObservable, FirebaseDatabase} from "angularfire2";
 import {User} from "../model/user";
 import {AppEvent} from "../model/app-event";
+import {AppContants} from "../app.constants";
 
 @Injectable()
 export class UserService {
@@ -10,19 +11,36 @@ export class UserService {
   userEvent:EventEmitter<AppEvent> = new EventEmitter();
 
   constructor(private angulareFire: AngularFire) {
+    this.initLogin();
+  }
+
+  private initLogin() {
     this.angulareFire.auth.subscribe(auth => {
       if (auth) {
         console.info("Logged In", auth);
-        this.user = new User();
-        this.user.email = auth.auth.email;
-        this.user.name = auth.auth.displayName;
-        this.user.photoUrl = auth.auth.photoURL;
-        this.user.provider = auth.auth.providerData[0].providerId;
-        console.log("User", this.user);
-        this.userEvent.next({
-          type: 'loggedIn',
-          data: this.user
+        let currentUser: FirebaseObjectObservable<any> = this.angulareFire.database.object("/users/" + auth.auth.uid);
+        currentUser.subscribe(user=> {
+          console.log("currentUser", user);
+          this.user = <User> currentUser;
+          if (!user.$exists() || true) {
+            currentUser.set({
+              name: auth.auth.displayName,
+              email: auth.auth.email,
+              photoUrl: auth.auth.photoURL,
+              provider: auth.auth.providerData[0].providerId,
+              createdAt: AppContants.firebaseServerTime
+            });
+            this.userEvent.next({
+              type: 'newUser'
+            });
+          } else {
+            this.userEvent.next({
+              type: 'loggedIn'
+            });
+          }
+
         });
+
       } else {
         console.info("Not logged in");
         this.userEvent.next({
@@ -31,6 +49,22 @@ export class UserService {
       }
 
     });
+  }
+
+  getCurrentUser():FirebaseObjectObservable<any> {
+    // let existingUser:FirebaseObjectObservable<any> = this.angulareFire.database.object("/users/" + this.user.provider + "-" + this.user.providerUserId);
+    // let existingUser:FirebaseObjectObservable<any> = this.angulareFire.database.object("/users/abc-123");
+    // console.log(existingUser.subscribe(data=>{
+    //   console.log(data);
+    // }));
+
+    let existingUser:FirebaseObjectObservable<any> = this.angulareFire.database.object("/users/abc-456");
+    console.log(existingUser);
+    existingUser.set({
+      test: 'blah'
+    })
+
+    return existingUser;
   }
 
   login(type:string) {
@@ -44,6 +78,18 @@ export class UserService {
       case 'google':
         this.angulareFire.auth.login({
           provider: AuthProviders.Google,
+          method: AuthMethods.Redirect
+        });
+        break;
+      case 'github':
+        this.angulareFire.auth.login({
+          provider: AuthProviders.Github,
+          method: AuthMethods.Redirect
+        });
+        break;
+      case 'twitter':
+        this.angulareFire.auth.login({
+          provider: AuthProviders.Twitter,
           method: AuthMethods.Redirect
         });
         break;
