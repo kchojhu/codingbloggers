@@ -3,43 +3,47 @@ import {AngularFire, AuthProviders, AuthMethods, FirebaseObjectObservable, Fireb
 import {User} from "../model/user";
 import {AppEvent} from "../model/app-event";
 import {AppContants} from "../app.constants";
+import {ToasterService} from "angular2-toaster";
 
 @Injectable()
 export class UserService {
-  user:User;
+  user: User;
 
-  userEvent:EventEmitter<AppEvent> = new EventEmitter();
+  userEvent: EventEmitter<AppEvent> = new EventEmitter();
 
-  constructor(private angulareFire: AngularFire) {
+  constructor(private angulareFire: AngularFire, toasterService: ToasterService) {
     this.initLogin();
   }
 
   private initLogin() {
+
     this.angulareFire.auth.subscribe(auth => {
+
       if (auth) {
         console.info("Logged In", auth);
         let currentUser: FirebaseObjectObservable<any> = this.angulareFire.database.object("/users/" + auth.auth.uid);
         currentUser.subscribe(user=> {
-          console.log("currentUser", user);
-          this.user = <User> currentUser;
-          if (!user.$exists() || true) {
-            currentUser.set({
-              name: auth.auth.displayName,
-              email: auth.auth.email,
-              photoUrl: auth.auth.photoURL,
-              provider: auth.auth.providerData[0].providerId,
-              createdAt: AppContants.firebaseServerTime
-            });
-            this.userEvent.next({
-              type: 'newUser'
-            });
-          } else {
-            this.userEvent.next({
-              type: 'loggedIn'
-            });
-          }
+            console.log("currentUser", user);
+            this.user = <User> currentUser;
+            if (!user.$exists()) {
+              currentUser.set({
+                name: auth.auth.displayName,
+                email: auth.auth.email,
+                photoUrl: auth.auth.photoURL,
+                provider: auth.auth.providerData[0].providerId,
+                createdAt: AppContants.firebaseServerTime
+              });
+              this.userEvent.next({
+                type: 'newUser'
+              });
+            } else {
+              this.userEvent.next({
+                type: 'loggedIn'
+              });
+            }
 
-        });
+          }
+        );
 
       } else {
         console.info("Not logged in");
@@ -51,14 +55,14 @@ export class UserService {
     });
   }
 
-  getCurrentUser():FirebaseObjectObservable<any> {
+  getCurrentUser(): FirebaseObjectObservable<any> {
     // let existingUser:FirebaseObjectObservable<any> = this.angulareFire.database.object("/users/" + this.user.provider + "-" + this.user.providerUserId);
     // let existingUser:FirebaseObjectObservable<any> = this.angulareFire.database.object("/users/abc-123");
     // console.log(existingUser.subscribe(data=>{
     //   console.log(data);
     // }));
 
-    let existingUser:FirebaseObjectObservable<any> = this.angulareFire.database.object("/users/abc-456");
+    let existingUser: FirebaseObjectObservable<any> = this.angulareFire.database.object("/users/abc-456");
     console.log(existingUser);
     existingUser.set({
       test: 'blah'
@@ -67,12 +71,14 @@ export class UserService {
     return existingUser;
   }
 
-  login(type:string) {
-    switch(type) {
+  login(type: string) {
+    switch (type) {
       case 'facebook':
         this.angulareFire.auth.login({
           provider: AuthProviders.Facebook,
           method: AuthMethods.Redirect
+        }).catch(error=> {
+          console.log('error!!!', error);
         });
         break;
       case 'google':
@@ -103,7 +109,6 @@ export class UserService {
       type: 'loggedOut'
     });
   }
-
 
 
 }
