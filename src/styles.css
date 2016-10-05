@@ -11,8 +11,37 @@ body {
   position: absolute;
   display: block;
   color: black;
-  margin-top: 0.2em;
-  overflow: hidden; }
+  margin-top: 11px; }
+
+.loginPopOver:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  margin-left: -10px;
+  bottom: 100%;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid white;
+  border-top: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent; }
+
+.loginPopOver:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: -21px;
+  left: 50%;
+  margin-left: -10px;
+  bottom: 100%;
+  width: 0;
+  height: 0;
+  border-bottom: 10px solid #e0e0e0;
+  border-top: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent; }
 
 .showTransition {
   display: block; }
