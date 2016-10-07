@@ -8,6 +8,8 @@ import {AngularFireModule} from "angularfire2";
 import { LoginComponent } from './login/login.component';
 import {UserService} from "./service/user.service";
 import {ToasterModule, ToasterService} from 'angular2-toaster/angular2-toaster';
+import { ArticlesComponent } from './articles/articles.component';
+import {appRoutingProviders, routing} from "./app.routing";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCxChziANeQ6qBrfdTHtSbSZE_nyIAkfv8",
@@ -19,9 +21,11 @@ export const firebaseConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    ArticlesComponent
   ],
   imports: [
+    routing,
     ToasterModule,
     BrowserModule,
     CommonModule,
@@ -29,7 +33,7 @@ export const firebaseConfig = {
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig)
   ],
-  providers: [UserService, ToasterService],
+  providers: [UserService, ToasterService, appRoutingProviders],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent]
 })
