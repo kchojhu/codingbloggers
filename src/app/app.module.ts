@@ -10,6 +10,7 @@ import {UserService} from "./service/user.service";
 import {ToasterModule, ToasterService} from 'angular2-toaster/angular2-toaster';
 import { ArticlesComponent } from './articles/articles.component';
 import {appRoutingProviders, routing} from "./app.routing";
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCxChziANeQ6qBrfdTHtSbSZE_nyIAkfv8",
@@ -22,7 +23,8 @@ export const firebaseConfig = {
   declarations: [
     AppComponent,
     LoginComponent,
-    ArticlesComponent
+    ArticlesComponent,
+    UserProfileComponent
   ],
   imports: [
     routing,

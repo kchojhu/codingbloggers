@@ -11,6 +11,7 @@ import {
 import {UserService} from "../service/user.service";
 import {User} from "../model/user";
 import {AppEvent} from "../model/app-event";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -35,16 +36,15 @@ import {AppEvent} from "../model/app-event";
 })
 export class LoginComponent implements OnInit {
 
-  loginMenuState = 'inactive';
-  user:User;
-  initLogin = false;
-  isNewUser = false;
+  loginMenuState:string = 'inactive';
+  isLoggedIn:boolean = null;
+  user: User;
 
   showLoginForm() {
     this.loginMenuState = this.loginMenuState === 'inactive' ? 'active' : 'inactive';
   }
 
-  constructor(private elementRef:ElementRef, private userService:UserService) {
+  constructor(private elementRef: ElementRef, private userService: UserService, private router:Router) {
   }
 
   checkClickLocation(event) {
@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  login(type:string) {
+  login(type: string) {
     this.userService.login(type);
   }
 
@@ -66,14 +66,21 @@ export class LoginComponent implements OnInit {
   // }
 
   ngOnInit() {
-    this.userService.userEvent.subscribe((appEvent:AppEvent) => {
-      switch(appEvent.type) {
+    this.userService.userEvent.subscribe((appEvent: AppEvent) => {
+
+      switch (appEvent.type) {
         case 'notLoggedIn':
         case 'loggedOut':
+          this.user = this.userService.user;
+          this.isLoggedIn = false;
+          break;
         case 'loggedIn':
           this.user = this.userService.user;
-          this.initLogin = true;
-          // verifyNewUser();
+          console.debug('logged', this.user);
+          if (this.user.isNewUser) {
+            this.router.navigate(['/user-profile']);
+          }
+          this.isLoggedIn = true;
           break;
       }
     });

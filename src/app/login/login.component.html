@@ -1,4 +1,4 @@
-<form class="form-inline pull-xs-right loginForm" *ngIf="!user && initLogin">
+<form class="form-inline pull-xs-right loginForm" *ngIf="isLoggedIn === false">
   <button class="btn btn-outline-success" [ngClass]="{'active':loginMenuState === 'active'}" (click)="showLoginForm()">
     Login
   </button>
@@ -13,7 +13,7 @@
     </div>
   </div>
 </form>
-<form class="form-inline pull-xs-right loginForm" *ngIf="user && initLogin">
+<form class="form-inline pull-xs-right loginForm" *ngIf="isLoggedIn === true">
   {{user.name}}
   <button class="btn btn-outline-success" [ngClass]="{'active':loginMenuState === 'active'}" (click)="logout()">
     Logout

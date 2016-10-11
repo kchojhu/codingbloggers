@@ -17,7 +17,7 @@ export class UserService {
 
   private initLogin() {
 
-    this.angulareFire.auth.subscribe(auth => {
+    this.angulareFire.auth.subscribe((auth: any) => {
 
       if (auth) {
         console.info("Logged In", auth);
@@ -26,21 +26,22 @@ export class UserService {
             console.log("currentUser", user);
             this.user = <User> currentUser;
             if (!user.$exists()) {
-              currentUser.set({
-                name: auth.auth.displayName,
-                email: auth.auth.email,
-                photoUrl: auth.auth.photoURL,
-                provider: auth.auth.providerData[0].providerId,
-                createdAt: AppContants.firebaseServerTime
-              });
-              this.userEvent.next({
-                type: 'newUser'
-              });
+              this.user.isNewUser = true;
+              // currentUser.set({
+              //   name: auth.auth.displayName,
+              //   email: auth.auth.email,
+              //   photoUrl: auth.auth.photoURL,
+              //   provider: auth.auth.providerData[0].providerId,
+              //   createdAt: AppContants.firebaseServerTime
+              // });
+
             } else {
-              this.userEvent.next({
-                type: 'loggedIn'
-              });
+              this.user.isNewUser = false;
             }
+
+            this.userEvent.next({
+              type: 'loggedIn'
+            });
 
           }
         );
@@ -77,8 +78,6 @@ export class UserService {
         this.angulareFire.auth.login({
           provider: AuthProviders.Facebook,
           method: AuthMethods.Redirect
-        }).catch(error=> {
-          console.log('error!!!', error);
         });
         break;
       case 'google':
