@@ -4,9 +4,17 @@ body {
 .mainHeader {
   padding: 0; }
 
+.mainContent {
+  padding-top: 1rem; }
+
+/* CardLayout */
+.card-header {
+  font-weight: bold; }
+
 .navbar {
   border-radius: 0; }
 
+/* login popover */
 .loginPopOver {
   position: absolute;
   display: block;

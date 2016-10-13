@@ -8,11 +8,22 @@ body {
   padding: 0;
 }
 
+.mainContent {
+  padding-top: 1rem;
+}
+
+/* CardLayout */
+.card-header {
+  font-weight: bold;
+}
+
+
+
 .navbar {
   border-radius: 0;
 }
 
-
+/* login popover */
 .loginPopOver {
   position: absolute;
   display: block;
@@ -51,7 +62,6 @@ body {
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
 }
-
 
 
 .showTransition {
@@ -99,3 +109,5 @@ body {
 .fa-github-square {
   color: #070709;
 }
+
+

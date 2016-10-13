@@ -3,7 +3,6 @@ import {AngularFire, AuthProviders, AuthMethods, FirebaseObjectObservable, Fireb
 import {User} from "../model/user";
 import {AppEvent} from "../model/app-event";
 import {AppContants} from "../app.constants";
-import {ToasterService} from "angular2-toaster";
 
 @Injectable()
 export class UserService {
@@ -11,7 +10,7 @@ export class UserService {
 
   userEvent: EventEmitter<AppEvent> = new EventEmitter();
 
-  constructor(private angulareFire: AngularFire, toasterService: ToasterService) {
+  constructor(private angulareFire: AngularFire) {
     this.initLogin();
   }
 

@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import {AngularFireModule} from "angularfire2";
 import { LoginComponent } from './login/login.component';
 import {UserService} from "./service/user.service";
-import {ToasterModule, ToasterService} from 'angular2-toaster/angular2-toaster';
 import { ArticlesComponent } from './articles/articles.component';
 import {appRoutingProviders, routing} from "./app.routing";
 import { UserProfileComponent } from './user-profile/user-profile.component';
@@ -28,14 +27,13 @@ export const firebaseConfig = {
   ],
   imports: [
     routing,
-    ToasterModule,
     BrowserModule,
     CommonModule,
     FormsModule,
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig)
   ],
-  providers: [UserService, ToasterService, appRoutingProviders],
+  providers: [UserService, appRoutingProviders],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent]
 })
